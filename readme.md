@@ -4,14 +4,12 @@ A full-stack web application that analyzes the **structural quality of a website
 
 The application accepts a website URL, analyzes its HTML structure on the backend, and returns an overall structure score along with a detailed breakdown and actionable recommendations.
 
----
-
 ## ✨ Features
 
-- 🔍 Analyze any public website via URL
-- 📊 Overall Structure Score (0–100)
-- 🧠 AI-assisted semantic and structural analysis
-- 🧩 Category-level breakdown:
+- Analyze any public website via URL
+- Overall Structure Score (0–100)
+- AI-assisted semantic and structural analysis
+- Category-level breakdown:
 
   - Semantic Markup
   - DOM Structure Clarity
@@ -20,10 +18,8 @@ The application accepts a website URL, analyzes its HTML structure on the backen
   - Script Dependency
   - Accessibility Signals
 
-- 📝 Human-readable summary & recommendations
-- ⚡ Modern, responsive UI
-
----
+- Human-readable summary & recommendations
+- Modern, responsive UI
 
 ## 🏗️ Tech Stack
 
@@ -38,10 +34,7 @@ The application accepts a website URL, analyzes its HTML structure on the backen
 
 - **Node.js** (Express)
 - **Axios** (HTML fetching)
-- **Cheerio** (HTML parsing)
 - **OpenRouter AI API** (LLM-based semantic analysis)
-
----
 
 ## 📐 High-Level Architecture
 
@@ -53,8 +46,7 @@ The application accepts a website URL, analyzes its HTML structure on the backen
 [ Node.js Backend ]
         |
         |  Fetch Website HTML
-        |  Parse with Cheerio
-        |  Send structured data to LLM
+        |  Send data to LLM
         v
 [ OpenRouter AI ]
         |
@@ -64,8 +56,6 @@ The application accepts a website URL, analyzes its HTML structure on the backen
         v
 [ Frontend Visualization ]
 ```
-
----
 
 ## 📊 Analysis Output (Response Schema)
 
@@ -95,8 +85,6 @@ The application accepts a website URL, analyzes its HTML structure on the backen
 }
 ```
 
----
-
 ## 🧑‍💻 Local Setup & Installation
 
 ### Prerequisites
@@ -107,8 +95,6 @@ Make sure you have the following installed:
 - **npm** ≥ 9.x
 - **Git**
 
----
-
 ## Getting Started
 
 ### 1️⃣ Clone the Repository
@@ -117,8 +103,6 @@ Make sure you have the following installed:
 git clone https://github.com/mannankhan-05/website-structure-analysis.git
 cd website-structure-analysis
 ```
-
----
 
 ## 🔧 Backend Setup (Server)
 
@@ -156,8 +140,6 @@ The backend will start on:
 http://localhost:5000
 ```
 
----
-
 ## 🎨 Frontend Setup (Client)
 
 ### 6️⃣ Navigate to Frontend Directory
@@ -184,8 +166,6 @@ The app will be available at:
 http://localhost:8080
 ```
 
----
-
 ## 🧪 Usage
 
 1. Open the frontend in your browser
@@ -194,21 +174,17 @@ http://localhost:8080
 4. Wait for analysis to complete
 5. View structure score, breakdown, and recommendations
 
----
-
 ## ⚠️ Common Issues & Troubleshooting
 
-### ❌ OpenRouter 429 Error (Rate Limit)
+### OpenRouter 429 Error (Rate Limit)
 
 - Free-tier models are heavily rate-limited
 - Use retries with backoff or switch to a paid model
 
-### ❌ Tailwind "Unknown word 'use strict'"
+### Tailwind "Unknown word 'use strict'"
 
 - Ensure Tailwind is loaded via PostCSS
 - Do NOT import `tailwindcss` directly in CSS
-
----
 
 ## 🧠 Design Goals
 
@@ -217,8 +193,6 @@ http://localhost:8080
 - Human-readable insights
 - Production-ready architecture
 
----
-
 ## 🔮 Future Improvements
 
 - Authentication & saved reports
@@ -226,13 +200,9 @@ http://localhost:8080
 - Multi-page crawling
 - Accessibility scoring (WCAG)
 
----
-
 ## 📄 License
 
 MIT License
-
----
 
 ## 🙌 Author
 
