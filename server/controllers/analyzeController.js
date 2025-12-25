@@ -1,4 +1,5 @@
 import { fetchWebsiteData } from "../services/websiteFetcher.js";
+import { parseRawHtml } from "../services/cheerioParser.js";
 import { parseDataWithAI } from "../services/aiParser.js";
 
 export async function analyzeWebsite(req, res) {
@@ -32,11 +33,11 @@ export async function analyzeWebsite(req, res) {
     // STEP 1: Fetch website data
     const fetchResult = await fetchWebsiteData(url);
 
-    // STEP 2: Parse data with AI
-    const parseResult = await parseDataWithAI(
-      fetchResult.htmlContent,
-      fetchResult.finalUrl
-    );
+    // STEP 2: Parse raw HTML
+    const parsedHtml = parseRawHtml(fetchResult.htmlContent);
+
+    // STEP 3 : Parse data with AI
+    const parseResult = await parseDataWithAI(parsedHtml, fetchResult.finalUrl);
 
     // Calculate processing time
     const processingTime = Date.now() - startTime;

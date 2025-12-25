@@ -4,26 +4,21 @@ dotenv.config();
 
 export async function parseDataWithAI(htmlContent, url) {
   try {
-    console.log("Parsing data with OpenRouter AI...");
+    console.log("[STEP 2] Starting AI analysis pipeline...");
 
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
       throw new Error("OPENROUTER_API_KEY not found in environment variables");
     }
 
-    // Truncate HTML if too large (keep first 8000 chars for context)
-    const truncatedHtml =
-      htmlContent.length > 8000
-        ? htmlContent.substring(0, 8000) + "...[truncated]"
-        : htmlContent;
+    console.log("[STEP 2B] Sending structured data to AI...");
 
-    const prompt = `
-You are analyzing the STRUCTURAL QUALITY of a website for machine readability.
+    const prompt = `You are analyzing the STRUCTURAL QUALITY of a website for machine readability.
 
 URL: ${url}
 
-HTML (truncated):
-${truncatedHtml}
+STRUCTURED DATA EXTRACTED FROM HTML:
+${JSON.stringify(htmlContent, null, 2)}
 
 Analyze the website based ONLY on:
 - HTML semantics
@@ -31,40 +26,40 @@ Analyze the website based ONLY on:
 - Machine readability
 - Semantic clarity
 
-Return a VALID JSON object with the following structure:
+Return a VALID JSON object with the following EXACT structure (all fields are REQUIRED):
 
 {
-    "overall_structure_score": number (0-100),
+  "overall_structure_score": number (0-100),
   "summary": {
-    "overall_assessment": string,
-    "primary_strengths": string[],
-    "primary_weaknesses": string[]
+    "overall_assessment": "string describing overall quality",
+    "primary_strengths": ["strength 1", "strength 2", "strength 3"],
+    "primary_weaknesses": ["weakness 1", "weakness 2", "weakness 3"]
   },
   "semantic_markup": {
-    "semantic_elements_used": string[],
+    "semantic_elements_used": ["element1", "element2"],
     "semantic_quality": "excellent" | "good" | "moderate" | "poor",
-    "issues": string[],
+    "issues": ["issue 1", "issue 2"],
     "semantic_markup_score": number (0-100)
   },
   "dom_structure": {
     "hierarchy_clarity": "clear" | "moderate" | "unclear",
     "nesting_quality": "good" | "moderate" | "poor",
-    "issues": string[],
+    "issues": ["issue 1", "issue 2"],
     "dom_structure_score": number (0-100)
   },
   "content_organization": {
     "heading_hierarchy_quality": "good" | "moderate" | "poor",
-    "content_grouping_assessment": string,
+    "content_grouping_assessment": "string assessment",
     "content_organization_score": number (0-100)
   },
   "metadata": {
     "meta_quality": "good" | "partial" | "missing",
-    "issues": string[],
+    "issues": ["issue 1", "issue 2"],
     "meta_quality_score": number (0-100)
   },
   "script_dependency": {
     "dependency_level": "low" | "moderate" | "high",
-    "rendering_risk": string,
+    "rendering_risk": "string explaining risk",
     "script_dependency_score": number (0-100)
   },
   "accessibility_signals": {
@@ -74,22 +69,24 @@ Return a VALID JSON object with the following structure:
   },
   "recommendations": [
     {
-      "category": string,
-      "recommendation": string,
+      "category": "string",
+      "recommendation": "string",
       "impact": "high" | "medium" | "low"
     }
   ]
 }
 
-DO NOT include scores.
-DO NOT include SEO analysis.
-DO NOT include anything outside JSON.
-`;
+CRITICAL RULES:
+- Return ONLY the JSON object, no markdown, no explanation
+- All fields must be present
+- Use exact enum values shown above
+- Provide at least 3-5 recommendations
+- DO NOT include SEO scores or marketing analysis
+- Focus purely on technical structure`;
 
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
-        // model: "google/gemini-2.0-flash-exp:free", // Free model
         model: "meta-llama/llama-3.3-70b-instruct:free",
         messages: [
           {
@@ -106,12 +103,13 @@ DO NOT include anything outside JSON.
           "HTTP-Referer": "http://localhost:3000",
           "X-Title": "Website Structure Analyzer",
         },
-        timeout: 30000,
+        timeout: 45000,
       }
     );
 
     const aiResponse = response.data.choices[0].message.content;
-    console.log("AI parsing completed");
+    console.log("[STEP 2B] ✓ AI analysis completed");
+    console.log("[STEP 2B] Raw AI Response:", aiResponse);
 
     // Try to parse JSON from AI response
     let parsedData;
@@ -123,11 +121,19 @@ DO NOT include anything outside JSON.
         .trim();
 
       parsedData = JSON.parse(cleanedResponse);
+      console.log("[STEP 2B] ✓ AI response parsed as JSON");
+      console.log(
+        "[STEP 2B] Parsed Analysis:",
+        JSON.stringify(parsedData, null, 2)
+      );
     } catch (parseError) {
+      console.error("[STEP 2B] ✗ JSON parsing failed:", parseError.message);
       // If JSON parsing fails, return raw response
       parsedData = {
+        error: true,
         rawAnalysis: aiResponse,
-        note: "AI response was not in JSON format",
+        note: "AI response was not in valid JSON format",
+        structuredData: structuredData, // Include the structured data we parsed
       };
     }
 
@@ -138,7 +144,10 @@ DO NOT include anything outside JSON.
       tokensUsed: response.data.usage,
     };
   } catch (error) {
-    console.error("Error parsing with AI:", error.message);
+    console.error("[STEP 2] ✗ Error in AI analysis:", error.message);
+    if (error.response) {
+      console.error("[STEP 2] API Error Response:", error.response.data);
+    }
     throw new Error(`AI parsing failed: ${error.message}`);
   }
 }
