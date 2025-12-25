@@ -680,14 +680,14 @@ export default {
     },
 
     getImpactBgClass(impact) {
-      if (impactLevel === "high") return "bg-rose-500/10";
-      if (impactLevel === "medium") return "bg-amber-500/10";
+      if (impact === "high") return "bg-rose-500/10";
+      if (impact === "medium") return "bg-amber-500/10";
       return "bg-blue-500/10";
     },
 
     getImpactTextClass(impact) {
-      if (impactLevel === "high") return "text-rose-400";
-      if (impactLevel === "medium") return "text-amber-400";
+      if (impact === "high") return "text-rose-400";
+      if (impact === "medium") return "text-amber-400";
       return "text-blue-400";
     },
 
