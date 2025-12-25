@@ -43,28 +43,34 @@ Return a VALID JSON object with the following structure:
   "semantic_markup": {
     "semantic_elements_used": string[],
     "semantic_quality": "excellent" | "good" | "moderate" | "poor",
-    "issues": string[]
+    "issues": string[],
+    "semantic_markup_score": number (0-100)
   },
   "dom_structure": {
     "hierarchy_clarity": "clear" | "moderate" | "unclear",
     "nesting_quality": "good" | "moderate" | "poor",
-    "issues": string[]
+    "issues": string[],
+    "dom_structure_score": number (0-100)
   },
   "content_organization": {
     "heading_hierarchy_quality": "good" | "moderate" | "poor",
-    "content_grouping_assessment": string
+    "content_grouping_assessment": string,
+    "content_organization_score": number (0-100)
   },
   "metadata": {
     "meta_quality": "good" | "partial" | "missing",
-    "issues": string[]
+    "issues": string[],
+    "meta_quality_score": number (0-100)
   },
   "script_dependency": {
     "dependency_level": "low" | "moderate" | "high",
-    "rendering_risk": string
+    "rendering_risk": string,
+    "script_dependency_score": number (0-100)
   },
   "accessibility_signals": {
     "aria_usage": "good" | "minimal" | "missing",
-    "alt_text_quality": "good" | "partial" | "missing"
+    "alt_text_quality": "good" | "partial" | "missing",
+    "accessibility_score": number (0-100)
   },
   "recommendations": [
     {
