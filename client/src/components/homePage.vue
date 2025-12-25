@@ -17,12 +17,16 @@
           </div>
           <span class="text-xl font-bold tracking-tight">Structura</span>
         </div>
-        <div
-          class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400"
-        >
-          <a href="#" class="hover:text-blue-400 transition-colors">Features</a>
-          <a href="#" class="hover:text-blue-400 transition-colors">Pricing</a>
-          <a href="#" class="hover:text-blue-400 transition-colors">Docs</a>
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+          <a href="#" class="text-blue-400 hover:text-white transition-colors"
+            >Features</a
+          >
+          <a href="#" class="text-blue-400 hover:text-white transition-colors"
+            >Pricing</a
+          >
+          <a href="#" class="text-blue-400 hover:text-white transition-colors"
+            >Docs</a
+          >
         </div>
         <button
           class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"
@@ -48,8 +52,8 @@
         <p
           class="text-lg md:text-xl text-slate-400 text-pretty max-w-2xl mx-auto leading-relaxed"
         >
-          Deep-dive into your site structure, internal linking, and hierarchy.
-          Get actionable insights to improve SEO and user experience in seconds.
+          Deep-dive into your website structure. Get actionable insights to
+          improve semantic markup, dom structure, and content organization.
         </p>
 
         <!-- Input Section -->
