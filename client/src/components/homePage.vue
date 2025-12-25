@@ -87,7 +87,7 @@
           </form>
         </div>
 
-        <!-- Result / Loading State -->
+        <!-- Loading State -->
         <div
           v-if="isLoading || result"
           class="mt-16 animate-in fade-in slide-in-from-bottom-4 duration-700"
@@ -113,13 +113,8 @@
             </div>
           </div>
 
-          <div
-            v-for="analysis in result"
-            :key="analysis.url"
-            v-else-if="result"
-            class="space-y-8 text-left"
-          >
-            <!-- Header Card -->
+          <div v-else-if="result" class="space-y-8 text-left">
+            <!-- Header Section -->
             <div
               class="p-8 border border-slate-800 rounded-3xl bg-slate-900/50 backdrop-blur-sm shadow-2xl"
             >
@@ -132,7 +127,7 @@
                     Analysis Results
                   </h2>
                   <p class="text-slate-400 text-sm font-mono">
-                    {{ analysis.url }}
+                    {{ result.analysis.url }}
                   </p>
                 </div>
                 <div
@@ -145,39 +140,14 @@
                       Structure Score
                     </p>
                     <p class="text-3xl font-mono text-blue-400">
-                      {{ analysis.overall_structure_score }}
+                      {{ result.analysis.overall_structure_score }}
                       <span class="text-lg text-slate-600">/100</span>
                     </p>
                   </div>
                   <div
+                    :v-model="result.analysis.overall_structure_score"
                     class="w-12 h-12 rounded-full border-4 border-slate-800 flex items-center justify-center relative"
-                  >
-                    <svg class="w-full h-full -rotate-90">
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="transparent"
-                        stroke="currentColor"
-                        stroke-width="4"
-                        class="text-blue-500/20"
-                      />
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="transparent"
-                        stroke="currentColor"
-                        stroke-width="4"
-                        stroke-dasharray="125.6"
-                        :stroke-dashoffset="
-                          125.6 *
-                          (1 - result.analysis.overall_structure_score / 100)
-                        "
-                        class="text-blue-500"
-                      />
-                    </svg>
-                  </div>
+                  ></div>
                 </div>
               </div>
 
@@ -192,7 +162,7 @@
                     Overall Assessment
                   </h3>
                   <p class="text-slate-300 leading-relaxed">
-                    {{ analysis.summary.overall_assessment }}
+                    {{ result.analysis.summary.overall_assessment }}
                   </p>
                 </div>
                 <div class="space-y-6">
@@ -238,7 +208,6 @@
 
             <!-- Detailed Metrics -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <!-- Replaced individual cards with a single v-for loop to iterate over all metrics dynamically -->
               <div
                 v-for="(metric, key) in {
                   'Semantic Markup': {
@@ -372,6 +341,9 @@ import {
   AlertTriangle,
   ShieldCheck,
   XCircle,
+  FileCode,
+  Layers,
+  Zap,
 } from "lucide-vue-next";
 import axios from "axios";
 
@@ -388,13 +360,16 @@ export default {
     AlertTriangle,
     ShieldCheck,
     XCircle,
+    FileCode,
+    Layers,
+    Zap,
   },
 
   data() {
     return {
       url: "",
       isLoading: false,
-      result: [],
+      result: null,
     };
   },
 
@@ -403,7 +378,7 @@ export default {
       if (!this.url) return;
 
       this.isLoading = true;
-      this.result = [];
+      this.result = null;
 
       try {
         const response = await axios.post(`http://localhost:5000/api/analyze`, {
@@ -411,6 +386,7 @@ export default {
         });
 
         this.result = response.data;
+        console.log(this.result);
 
         console.log("[v0] Analysis complete for:", this.url);
       } catch (error) {
