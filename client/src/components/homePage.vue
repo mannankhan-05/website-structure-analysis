@@ -95,9 +95,8 @@
                 </h2>
                 <p class="text-slate-400 text-sm font-mono">{{ result.url }}</p>
               </div>
-              <div
-                class="flex items-center gap-4 bg-slate-950 p-4 rounded-2xl border border-slate-800"
-              >
+              <div class="flex items-center gap-6">
+                <!-- Overall Structure Score -->
                 <div class="text-right">
                   <p
                     class="text-xs text-slate-500 uppercase font-bold tracking-wider"
@@ -111,6 +110,32 @@
                     {{ analysis.overall_structure_score }}
                     <span class="text-lg text-slate-600">/100</span>
                   </p>
+                </div>
+
+                <!-- Circular Progress Bar -->
+                <div class="relative w-20 h-20">
+                  <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                    <!-- background -->
+                    <path
+                      class="text-slate-800"
+                      fill="none"
+                      stroke-width="3"
+                      stroke="currentColor"
+                      d="M18 2a16 16 0 1 1 0 32 16 16 0 0 1 0-32"
+                    />
+                    <!-- progress -->
+                    <path
+                      class="text-blue-500"
+                      fill="none"
+                      stroke-width="3"
+                      stroke="currentColor"
+                      stroke-dasharray="100 100"
+                      :stroke-dashoffset="
+                        100 - analysis.overall_structure_score
+                      "
+                      d="M18 2a16 16 0 1 1 0 32 16 16 0 0 1 0-32"
+                    />
+                  </svg>
                 </div>
               </div>
             </div>
