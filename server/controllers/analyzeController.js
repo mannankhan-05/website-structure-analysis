@@ -8,7 +8,6 @@ export async function analyzeWebsite(req, res) {
   try {
     const { url } = req.body;
 
-    // Validation
     if (!url) {
       return res.status(400).json({
         success: false,

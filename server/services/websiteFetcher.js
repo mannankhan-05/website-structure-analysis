@@ -13,11 +13,6 @@ export async function fetchWebsiteData(url) {
       maxRedirects: 5,
     });
 
-    console.log(`Successfully fetched data. Status: ${response.status}`);
-
-    // Log the fetched HTML content (for debugging)
-    console.log("Fetched HTML content:", response.data);
-
     return {
       success: true,
       htmlContent: response.data,
@@ -25,7 +20,7 @@ export async function fetchWebsiteData(url) {
       finalUrl: response.request.res.responseUrl || url,
     };
   } catch (error) {
-    console.error("[STEP 1] Error fetching website:", error);
+    console.error("Error fetching website:", error);
     throw new Error(`Failed to fetch website: ${error}`);
   }
 }

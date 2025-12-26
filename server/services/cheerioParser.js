@@ -2,10 +2,8 @@ import * as cheerio from "cheerio";
 
 export function parseRawHtml(htmlContent) {
   try {
-    console.log("[STEP 2A] Parsing raw HTML data...");
     const $ = cheerio.load(htmlContent);
 
-    // Extract all meaningful data
     const structuredData = {
       title: $("title").text().trim() || "No title",
 
@@ -106,15 +104,9 @@ export function parseRawHtml(htmlContent) {
       },
     };
 
-    console.log("[STEP 2A] ✓ Raw data parsed successfully");
-    console.log(
-      "[STEP 2A] Extracted Data:",
-      JSON.stringify(structuredData, null, 2)
-    );
-
     return structuredData;
   } catch (error) {
-    console.error("[STEP 2A] Error parsing raw data:", error.message);
+    console.error("Error parsing raw data:", error.message);
     throw new Error(`Raw data parsing failed: ${error.message}`);
   }
 }

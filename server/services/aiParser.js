@@ -4,14 +4,12 @@ dotenv.config();
 
 export async function parseDataWithAI(htmlContent, url) {
   try {
-    console.log("[STEP 2] Starting AI analysis pipeline...");
-
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
       throw new Error("OPENROUTER_API_KEY not found in environment variables");
     }
 
-    console.log("[STEP 2B] Sending structured data to AI...");
+    console.log("Sending structured data to AI...");
 
     const prompt = `You are analyzing the STRUCTURAL QUALITY of a website for machine readability.
 
@@ -108,8 +106,6 @@ CRITICAL RULES:
     );
 
     const aiResponse = response.data.choices[0].message.content;
-    console.log("[STEP 2B] ✓ AI analysis completed");
-    console.log("[STEP 2B] Raw AI Response:", aiResponse);
 
     // Try to parse JSON from AI response
     let parsedData;
@@ -121,13 +117,8 @@ CRITICAL RULES:
         .trim();
 
       parsedData = JSON.parse(cleanedResponse);
-      console.log("[STEP 2B] ✓ AI response parsed as JSON");
-      console.log(
-        "[STEP 2B] Parsed Analysis:",
-        JSON.stringify(parsedData, null, 2)
-      );
     } catch (parseError) {
-      console.error("[STEP 2B] ✗ JSON parsing failed:", parseError.message);
+      console.error("JSON parsing failed:", parseError.message);
       // If JSON parsing fails, return raw response
       parsedData = {
         error: true,
@@ -144,9 +135,9 @@ CRITICAL RULES:
       tokensUsed: response.data.usage,
     };
   } catch (error) {
-    console.error("[STEP 2] ✗ Error in AI analysis:", error.message);
+    console.error("Error in AI analysis:", error.message);
     if (error.response) {
-      console.error("[STEP 2] API Error Response:", error.response.data);
+      console.error("API Error Response:", error.response.data);
     }
     throw new Error(`AI parsing failed: ${error.message}`);
   }
