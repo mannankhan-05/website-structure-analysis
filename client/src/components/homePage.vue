@@ -527,7 +527,7 @@
             </div>
           </div>
 
-          <!-- Recommendations -->
+          <!-- Recommendations Card -->
           <div
             class="p-8 border border-slate-800 rounded-3xl bg-blue-600/5 overflow-hidden relative"
           >
