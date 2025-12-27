@@ -71,7 +71,70 @@ Return a VALID JSON object with the following EXACT structure (all fields are RE
       "recommendation": "string",
       "impact": "high" | "medium" | "low"
     }
-  ]
+  ],
+   "page_structure_schema": {
+    "current_structure": {
+      "description": "string summarizing current page layout",
+      "raw_html_schema": "string containing a SIMPLIFIED version of the current HTML structure (like this : <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Title</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Short page description">
+  <meta name="author" content="Your Name">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>Website Title</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Section Title</h2>
+      <p>Main content goes here.</p>
+    </section>
+
+    <article>
+      <h2>Article Title</h2>
+      <p>Article content.</p>
+    </article>
+  </main>
+
+  <aside>
+    <p>Sidebar content</p>
+  </aside>
+
+  <footer>
+    <p>© 2025 Your Website</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>)",
+      "issues": ["issue 1", "issue 2"]
+    },
+    "recommended_structure": {
+      "description": "string explaining why this structure is better",
+      "raw_html_schema": "string containing a COMPLETE semantic HTML5 page template",
+      "improvements": ["improvement 1", "improvement 2"]
+    }
+  },
 }
 
 CRITICAL RULES:

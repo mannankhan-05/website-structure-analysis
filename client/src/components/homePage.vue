@@ -573,6 +573,108 @@
               </div>
             </div>
           </div>
+
+          <!-- Page Structure Comparison -->
+          <div
+            class="p-8 border border-slate-800 rounded-3xl bg-blue-600/5 overflow-hidden relative"
+          >
+            <div class="absolute top-0 right-0 p-8 opacity-5">
+              <ShieldCheck class="w-32 h-32 text-blue-400" />
+            </div>
+
+            <h3 class="text-lg font-bold flex items-center gap-2 mb-6">
+              <AlertTriangle class="w-5 h-5 text-blue-400" />
+              Page Structure Comparison
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- CURRENT STRUCTURE -->
+              <div class="flex flex-col gap-3">
+                <h4 class="font-bold">Current Page Structure</h4>
+
+                <p class="text-sm text-slate-400">
+                  {{
+                    analysis.page_structure_schema.current_structure.description
+                  }}
+                </p>
+
+                <pre
+                  class="bg-slate-900/50 p-4 rounded-xl border border-slate-800 whitespace-pre-wrap break-words text-xs font-mono overflow-auto"
+                  >{{
+                    analysis.page_structure_schema.current_structure
+                      .raw_html_schema
+                  }}
+      </pre
+                >
+
+                <ul
+                  v-if="
+                    analysis.page_structure_schema.current_structure.issues
+                      ?.length
+                  "
+                  class="space-y-1"
+                >
+                  <li
+                    v-for="issue in analysis.page_structure_schema
+                      .current_structure.issues"
+                    :key="issue"
+                    class="text-xs text-amber-400 flex gap-2"
+                  >
+                    <span>•</span> {{ issue }}
+                  </li>
+                </ul>
+              </div>
+
+              <!-- RECOMMENDED STRUCTURE -->
+              <div class="flex flex-col gap-3 relative">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-bold">Recommended Page Structure</h4>
+
+                  <!-- COPY BUTTON -->
+                  <button
+                    @click="copySchema"
+                    class="text-xs px-3 py-1 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 text-blue-400"
+                  >
+                    Copy HTML
+                  </button>
+                </div>
+
+                <p class="text-sm text-slate-400">
+                  {{
+                    analysis.page_structure_schema.recommended_structure
+                      .description
+                  }}
+                </p>
+
+                <pre
+                  ref="recommendedSchema"
+                  class="bg-slate-900/50 p-4 rounded-xl border border-slate-800 whitespace-pre-wrap break-words text-xs font-mono overflow-auto"
+                  >{{
+                    analysis.page_structure_schema.recommended_structure
+                      .raw_html_schema
+                  }}
+      </pre
+                >
+
+                <ul
+                  v-if="
+                    analysis.page_structure_schema.recommended_structure
+                      .improvements?.length
+                  "
+                  class="space-y-1"
+                >
+                  <li
+                    v-for="improvement in analysis.page_structure_schema
+                      .recommended_structure.improvements"
+                    :key="improvement"
+                    class="text-xs text-emerald-400 flex gap-2"
+                  >
+                    <span>•</span> {{ improvement }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
