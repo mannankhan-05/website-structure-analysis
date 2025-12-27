@@ -578,13 +578,13 @@
           <div
             class="p-8 border border-slate-800 rounded-3xl bg-blue-600/5 overflow-hidden relative"
           >
-            <div class="absolute top-0 right-0 p-8 opacity-5">
+            <!-- <div class="absolute top-0 right-0 p-8 opacity-5">
               <ShieldCheck class="w-32 h-32 text-blue-400" />
-            </div>
+            </div> -->
 
             <h3 class="text-lg font-bold flex items-center gap-2 mb-6">
-              <AlertTriangle class="w-5 h-5 text-blue-400" />
-              Page Structure Comparison
+              <ChartColumnStacked class="w-5 h-5 text-blue-400" />
+              Page Schema Comparison
             </h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -635,7 +635,11 @@
                     @click="copySchema"
                     class="text-xs px-3 py-1 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 text-blue-400"
                   >
-                    Copy HTML
+                    <span v-if="isCopied === false">Copy HTML</span>
+                    <CheckCircle2
+                      v-if="isCopied === true"
+                      class="w-4 h-4 text-green-500"
+                    />
                   </button>
                 </div>
 
@@ -700,6 +704,7 @@ import {
   Eye,
   Activity,
   Database,
+  ChartColumnStacked,
 } from "lucide-vue-next";
 
 export default {
@@ -722,6 +727,7 @@ export default {
     Activity,
     Eye,
     Database,
+    ChartColumnStacked,
   },
 
   data() {
@@ -730,6 +736,7 @@ export default {
       isLoading: false,
       result: null,
       error: null,
+      isCopied: false,
     };
   },
 
@@ -766,6 +773,21 @@ export default {
         console.error("[Analysis Error]", err);
       } finally {
         this.isLoading = false;
+      }
+    },
+
+    async copySchema() {
+      try {
+        await navigator.clipboard.writeText(
+          this.result.analysis.page_structure_schema.recommended_structure
+            .raw_html_schema
+        );
+        this.isCopied = true;
+        setTimeout(() => {
+          this.isCopied = false;
+        }, 2000);
+      } catch (err) {
+        console.error("Failed to copy schema", err);
       }
     },
 
