@@ -2,6 +2,8 @@ import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
 
+import { formatHTML } from "../utils/formatHTML.js";
+
 export async function parseDataWithAI(htmlContent, url) {
   try {
     const apiKey = process.env.OPENROUTER_API_KEY;
@@ -75,7 +77,7 @@ Return a VALID JSON object with the following EXACT structure (all fields are RE
    "page_structure_schema": {
     "current_structure": {
       "description": "string summarizing current page layout",
-      "raw_html_schema": "string containing a SIMPLIFIED version of the current HTML structure (like this : <!DOCTYPE html>
+      "raw_html_schema": "string containing a SIMPLIFIED version of the current HTML structure (like this: <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -180,6 +182,28 @@ CRITICAL RULES:
         .trim();
 
       parsedData = JSON.parse(cleanedResponse);
+
+      parsedData = JSON.parse(cleanedResponse);
+
+      // FORMAT HTML SCHEMAS SAFELY
+      if (parsedData?.page_structure_schema) {
+        const current =
+          parsedData.page_structure_schema.current_structure?.raw_html_schema;
+
+        const recommended =
+          parsedData.page_structure_schema.recommended_structure
+            ?.raw_html_schema;
+
+        if (current) {
+          parsedData.page_structure_schema.current_structure.raw_html_schema =
+            await formatHTML(current);
+        }
+
+        if (recommended) {
+          parsedData.page_structure_schema.recommended_structure.raw_html_schema =
+            await formatHTML(recommended);
+        }
+      }
     } catch (parseError) {
       console.error("JSON parsing failed:", parseError.message);
       // If JSON parsing fails, return raw response
